@@ -8,119 +8,6 @@ servers:
   - url: http://localhost:8080
 
 paths:
-  /feed:
-    get:
-      deprecated: true
-      description: Use new feed service
-      tags:
-        - feed
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: query
-          name: params
-          schema:
-            type: object
-            properties:
-              from_id:
-                type: string
-            additionalProperties:
-              type: string
-      responses:
-        200:
-          description: OK!
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Post"
-                  links:
-                    type: object
-                    properties:
-                      next:
-                        type: string
-
-  /feed/follow:
-    get:
-      deprecated: true
-      description: Use new feed service
-      tags:
-        - feed
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: query
-          name: params
-          schema:
-            type: object
-            properties:
-              from_id:
-                type: string
-            additionalProperties:
-              type: string
-      responses:
-        200:
-          description: OK!
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      allOf:
-                        - type: object
-                          properties:
-                            followed_tag:
-                              type: string
-                        - $ref: "#/components/schemas/Post"
-                  links:
-                    type: object
-                    properties:
-                      next:
-                        type: string
-
-  /feed/video:
-    get:
-      deprecated: true
-      description: Use new feed service
-      tags:
-        - feed
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: query
-          name: params
-          schema:
-            type: object
-            properties:
-              from_id:
-                type: string
-            additionalProperties:
-              type: string
-      responses:
-        200:
-          description: OK!
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Post"
-                  links:
-                    type: object
-                    properties:
-                      next:
-                        type: string
-
   /feed/hashtag:
     get:
       summary: |-
@@ -220,7 +107,7 @@ paths:
             type: integer
       responses:
         "200":
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -436,7 +323,7 @@ paths:
             type: string
       responses:
         "200":
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -617,7 +504,7 @@ paths:
             type: string
       responses:
         "200":
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -627,226 +514,12 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Post"
-
-  /comment:
-    get:
-      deprecated: true
-      description: Use new comment v2 service
-      tags:
-        - comment
-      parameters:
-        - in: query
-          name: post_id
-          schema:
-            type: string
-        - in: query
-          name: parent_id
-          schema:
-            type: string
-        - in: query
-          name: highlight
-          schema:
-            type: string
-        - in: query
-          name: from_id
-          schema:
-            type: string
-        - in: query
-          name: to_id
-          schema:
-            type: string
-      responses:
-        200:
-          description: OK!
-
-  /pin-comments:
-    post:
-      deprecated: true
-      description: Use new comment v2 service
-      tags:
-        - pin-comment
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                comment_id:
-                  type: string
-      responses:
-        200:
-          description: OK!
-
-  /pin-comments/{post_id}:
-    get:
-      deprecated: true
-      description: Use new comment v2 service
-      tags:
-        - pin-comment
-      parameters:
-        - in: path
-          required: true
-          name: post_id
-          schema:
-            type: string
-      responses:
-        200:
-          description: OK!
-    delete:
-      deprecated: true
-      description: Use new comment v2 service
-      tags:
-        - pin-comment
-      parameters:
-        - in: path
-          required: true
-          name: post_id
-          schema:
-            type: string
-      responses:
-        200:
-          description: OK!
-
-  /video/suggest:
-    get:
-      deprecated: true
-      description: Use new feed service
-      tags:
-        - suggest
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: query
-          name: video_id
-          schema:
-            type: string
-        - in: query
-          name: context
-          schema:
-            type: string
-      responses:
-        200:
-          description: OK!
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Post"
-                  links:
-                    type: object
-                    properties:
-                      next:
-                        type: string
-
-  /react/status-post:
-    get:
-      deprecated: true
-      description: Use new react v3 service
-      tags:
-        - react-status
-      parameters:
-        - in: query
-          name: ids
-          schema:
-            type: string
-      responses:
-        200:
-          description: OK!
-          content:
-            application/json:
-              schema:
-                type: object
-
-  /react/status-comment:
-    get:
-      deprecated: true
-      description: Use new react v3 service
-      tags:
-        - react-status
-      parameters:
-        - in: query
-          name: ids
-          schema:
-            type: string
-      responses:
-        200:
-          description: OK!
-          content:
-            application/json:
-              schema:
-                type: object
-
-  /post/user-like:
-    get:
-      deprecated: true
-      description: Use new react v3 service
-      parameters:
-        - in: query
-          name: post_id
-          schema:
-            type: string
-        - in: query
-          name: limit
-          schema:
-            type: string
-        - in: query
-          name: from_id
-          schema:
-            type: string
-      responses:
-        200:
-          description: OK!
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/UserMeta"
-                  links:
-                    type: object
-                    properties:
-                      next:
-                        type: string
-
-  /suggest/kol:
-    get:
-      deprecated: true
-      description: Use new suggest service
-      responses:
-        200:
-          description: OK!
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      allOf:
-                        - type: object
-                          properties:
-                            follow_count:
-                              type: integer
-                        - $ref: "#/components/schemas/UserMeta"
-                  links:
-                    type: object
-                    properties:
-                      next:
-                        type: string
 
   /hobbies/list:
     get:
       responses:
         200:
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -890,7 +563,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Post"
         403:
-          description: Post Not Found
+          description: Không tìm thấy bài viết
           content:
             application/json:
               schema:
@@ -910,7 +583,7 @@ paths:
                       group:
                         $ref: "#/components/schemas/GroupMeta"
         404:
-          description: Post Not Found
+          description: Không tìm thấy bài viết
           content:
             application/json:
               schema:
@@ -950,7 +623,7 @@ paths:
         required: true
       responses:
         200:
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -987,7 +660,7 @@ paths:
                 - $ref: "#/components/schemas/PostInput"
       responses:
         200:
-          description: OK!
+          description: OK
 
   /post/delete:
     post:
@@ -1009,10 +682,12 @@ paths:
                   type: string
       responses:
         200:
-          description: OK!
+          description: OK
 
   /post/acknowledge/{user_id}:
     get:
+      summary: |-
+        Lấy danh sách bài viết ghi nhận của một người dùng
       description: Lấy danh sách bài viết ghi nhận của một người dùng
       tags:
         - post
@@ -1032,7 +707,7 @@ paths:
             type: integer
       responses:
         200:
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -1046,7 +721,7 @@ paths:
                       next:
                         type: string
         403:
-          description: Post Not Found
+          description: Không tìm thấy bài viết
           content:
             application/json:
               schema:
@@ -1063,6 +738,8 @@ paths:
 
   /post/add-view:
     post:
+      summary: |-
+        Cộng lượt xem cho bài viết
       tags:
         - post
       security:
@@ -1079,10 +756,12 @@ paths:
                   type: string
       responses:
         200:
-          description: OK!
+          description: OK
 
   /post/pin/{post_id}:
     post:
+      summary: |-
+        PIN một bài viết lên đầu trang
       tags:
         - post
       security:
@@ -1103,10 +782,12 @@ paths:
                   type: boolean
       responses:
         200:
-          description: OK!
+          description: OK
 
   /post/unpin/{post_id}:
     post:
+      summary: |-
+        Bỏ PIN bài viết
       tags:
         - post
       security:
@@ -1119,10 +800,13 @@ paths:
             type: string
       responses:
         200:
-          description: OK!
+          description: OK
 
   /schedule-posts:
     get:
+      summary: |-
+        Lấy danh sách bài viết đã lên lịch
+      description: Bài viết đến lịch hẹn sẽ tự động được đăng lên
       tags:
         - schedule-post
       security:
@@ -1160,12 +844,15 @@ paths:
                       next:
                         type: string
     post:
+      summary: |-
+        Tạo bài viết được lên lịch
+      description: Bài viết đến lịch hẹn sẽ tự động được đăng lên
       tags:
         - schedule-post
       security:
         - bearerAuth: []
       requestBody:
-        description: . `content` or `media` must be required
+        description: `content` hoặc `media` không được để trống
         content:
           application/json:
             schema:
@@ -1178,7 +865,7 @@ paths:
         required: true
       responses:
         200:
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -1196,6 +883,9 @@ paths:
                     type: integer
 
   /schedule-posts/{id}:
+    summary: |-
+      Sửa bài viết đã lên lịch
+    description: Bài viết đến lịch hẹn sẽ tự động được đăng lên
     patch:
       tags:
         - schedule-post
@@ -1220,6 +910,9 @@ paths:
                         type: number
                   - $ref: "#/components/schemas/PostInput"
     delete:
+      summary: |-
+        Xoá bài viết đã lên lịch
+      description: Bài viết đến lịch hẹn sẽ tự động được đăng lên
       tags:
         - schedule-post
       security:
@@ -1236,12 +929,18 @@ paths:
 
   /schedule-posts/post-now/id:
     post:
+      summary: |-
+        Đăng ngay một bài viết đã lên lịch
+      description: Đăng bài viết ngay lập tức, không đợi đến lịch nữa
       responses:
         200:
           description: OK!
 
   /pending-posts/group-count/{group_id}:
     get:
+      summary: |-
+        Đếm số bài viết đang chờ trong một nhóm
+      description: Đếm số bài viết đang chờ trong một nhóm
       tags:
         - pending-post
       security:
@@ -1258,7 +957,7 @@ paths:
             type: number
       responses:
         200:
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -1269,6 +968,9 @@ paths:
 
   /pending-posts/group/{group_id}:
     get:
+      summary: |-
+        Đếm số bài viết đang chờ trong một nhóm
+      description: Đếm số bài viết đang chờ trong một nhóm
       tags:
         - pending-post
       security:
@@ -1309,6 +1011,9 @@ paths:
 
   /pending-posts/accept/{post_id}:
     post:
+      summary: |-
+        Duyệt bài viết đang chờ trong một nhóm
+      description: Duyệt bài viết đang chờ trong một nhóm
       tags:
         - pending-post
       security:
@@ -1332,6 +1037,9 @@ paths:
 
   /pending-posts/decline/{post_id}:
     post:
+      summary: |-
+        Từ chối bài viết đang chờ trong một nhóm
+      description: Từ chối bài viết đang chờ trong một nhóm
       tags:
         - pending-post
       security:
@@ -1352,133 +1060,6 @@ paths:
                 properties:
                   message:
                     type: string
-
-  /comment/create:
-    post:
-      deprecated: true
-      description: Use new comment v2 service
-      tags:
-        - comment
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: . `content` or `media` must be required
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/CommentCreateInput"
-      responses:
-        200:
-          description: OK!
-
-  /comment/update:
-    post:
-      deprecated: true
-      description: Use new comment v2 service
-      tags:
-        - comment
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/CommentUpdateInput"
-      responses:
-        200:
-          description: OK!
-
-  /comment/delete:
-    post:
-      deprecated: true
-      description: Use new comment v2 service
-      tags:
-        - comment
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-      responses:
-        200:
-          description: OK!
-
-  /comment/block:
-    post:
-      deprecated: true
-      description: Use new comment v2 service
-      tags:
-        - comment
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [post_id]
-              properties:
-                user_id:
-                  type: integer
-                page_id:
-                  type: integer
-                post_id:
-                  type: string
-      responses:
-        200:
-          description: OK!
-
-  /comment/un-block:
-    post:
-      deprecated: true
-      description: Use new comment v2 service
-      tags:
-        - comment
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [post_id]
-              properties:
-                user_id:
-                  type: integer
-                page_id:
-                  type: integer
-                post_id:
-                  type: string
-      responses:
-        200:
-          description: OK!
-
-  /search/post:
-    post:
-      deprecated: true
-      description: Use new search service
-      tags:
-        - search
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                query:
-                  type: string
-                page:
-                  type: integer
-      responses:
-        200:
-          description: OK!
 
   /app-version:
     get:
@@ -1518,74 +1099,11 @@ paths:
         200:
           description: OK!
 
-  /react-comment-v2/react/{comment_id}:
-    post:
-      deprecated: true
-      description: Use new react v3 service
-      tags:
-        - comment-v2
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          required: true
-          name: comment_id
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                react_type:
-                  type: integer
-                data_source:
-                  type: integer
-        required: true
-      responses:
-        200:
-          description: OK!
-
-  /react-comment-v2/list-user-react/{comment_id}:
-    get:
-      deprecated: true
-      description: Use new react v3 service
-      tags:
-        - comment-v2
-      parameters:
-        - in: path
-          required: true
-          name: comment_id
-          schema:
-            type: string
-        - in: query
-          name: react_type
-          schema:
-            type: integer
-        - in: query
-          name: last_time
-          schema:
-            type: number
-      responses:
-        200:
-          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/SuccessListUserReact"
-        "400":
-          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/BadRequest"
-        "401":
-          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/UNAUTHORIZED"
-        "403":
-          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/Forbidden"
-        "404":
-          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/NotFound"
-        "429":
-          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/LimitRequest"
-        "500":
-          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/InternalServerError"
-
   /posts/polls:
     post:
-      description: Create poll vote post
+      summary: |-
+        Tạo bài viết bình chọn
+      description: Tạo bài viết bình chọn
       tags:
         - post
       security:
@@ -1617,7 +1135,9 @@ paths:
 
   /posts/{post_id}:
     patch:
-      description: Update poll post
+      summary: |-
+        Sửa bài viết bình chọn
+      description: Sửa bài viết bình chọn
       tags:
         - post
       security:
@@ -1629,7 +1149,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description: Update poll post
+        description: Sửa bài viết bình chọn
         content:
           application/json:
             schema:
@@ -1637,7 +1157,7 @@ paths:
         required: true
       responses:
         200:
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -1653,7 +1173,7 @@ paths:
                   code:
                     type: integer
         400:
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
@@ -1695,7 +1215,7 @@ paths:
         required: true
       responses:
         200:
-          description: OK!
+          description: OK
           content:
             application/json:
               schema:
