@@ -1,0 +1,1623 @@
+openapi: 3.0.1
+info:
+  title: GAPO REACTION v3.0
+  version: 1.3.0
+servers:
+  - url: https://staging-api.gapo.vn/react/v3.0/
+  - url: https://api.gapo.vn/react/v3.0/
+  - url: http://localhost:3001
+
+paths:
+  /post/react/{post_id}:
+    post:
+      tags:
+        - React
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: post_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReactParam"
+        required: true
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+      security:
+        - bearerAuth: []
+  /comment/react/{comment_id}:
+    post:
+      tags:
+        - React
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: comment_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReactParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /story/react/{story_id}:
+    post:
+      tags:
+        - React
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: story_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReactParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /chat/react/{chat_id}:
+    post:
+      tags:
+        - React
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: chat_id
+          schema:
+            $ref: "#/components/schemas/chatID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReactParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /post/count/{post_id}:
+    get:
+      tags:
+        - Count
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: post_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessCountUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /comment/count/{comment_id}:
+    get:
+      tags:
+        - Count
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: comment_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessCountUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /story/count/{story_id}:
+    get:
+      tags:
+        - Count
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: story_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessCountUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /chat/count/{chat_id}:
+    get:
+      tags:
+        - Count
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: chat_id
+          schema:
+            $ref: "#/components/schemas/chatID"
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessCountUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /post/multi-count:
+    get:
+      tags:
+        - Multi Count
+      parameters:
+        - in: query
+          description: id,id,id
+          required: true
+          name: ids
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessCountUserReactMulti"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /comment/multi-count:
+    get:
+      tags:
+        - Multi Count
+      parameters:
+        - in: query
+          description: id,id,id
+          required: true
+          name: ids
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessCountUserReactMulti"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /story/multi-count:
+    get:
+      tags:
+        - Multi Count
+      parameters:
+        - in: query
+          description: id,id,id
+          required: true
+          name: ids
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessCountUserReactMulti"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /chat/multi-count:
+    get:
+      tags:
+        - Multi Count
+      parameters:
+        - in: query
+          description: id,id,id
+          required: true
+          name: ids
+          schema:
+            $ref: "#/components/schemas/chatID"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessCountUserReactMulti"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /post/check/{post_id}:
+    get:
+      tags:
+        - Check React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: post_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      responses:
+        "200":
+          $ref: "#/components/responses/SuccessCheckUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /comment/check/{comment_id}:
+    get:
+      tags:
+        - Check React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: comment_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      responses:
+        "200":
+          $ref: "#/components/responses/SuccessCheckUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /story/check/{story_id}:
+    get:
+      tags:
+        - Check React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: story_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      responses:
+        "200":
+          $ref: "#/components/responses/SuccessCheckUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /chat/check/{chat_id}:
+    get:
+      tags:
+        - Check React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: chat_id
+          schema:
+            $ref: "#/components/schemas/chatID"
+      responses:
+        "200":
+          $ref: "#/components/responses/SuccessCheckUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /post/multi-check:
+    get:
+      tags:
+        - Multi Check React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: ids
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      responses:
+        "200":
+          $ref: "#/components/responses/SuccessCheckUserReactMulti"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /comment/multi-check:
+    get:
+      tags:
+        - Multi Check React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: ids
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      responses:
+        "200":
+          $ref: "#/components/responses/SuccessCheckUserReactMulti"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /story/multi-check:
+    get:
+      tags:
+        - Multi Check React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: ids
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      responses:
+        "200":
+          $ref: "#/components/responses/SuccessCheckUserReactMulti"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /chat/multi-check:
+    get:
+      tags:
+        - Multi Check React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: ids
+          schema:
+            $ref: "#/components/schemas/chatID"
+      responses:
+        "200":
+          $ref: "#/components/responses/SuccessCheckUserReactMulti"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /post/list-user-react/{post_id}:
+    get:
+      tags:
+        - List User React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: post_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+        - in: query
+          name: last_time
+          schema:
+            type: number
+          example: 1588761265000
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessListUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /comment/list-user-react/{comment_id}:
+    get:
+      tags:
+        - List User React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: comment_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+        - in: query
+          name: last_time
+          schema:
+            type: number
+          example: 1588761265000
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessListUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /story/list-user-react/{story_id}:
+    get:
+      tags:
+        - List User React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: story_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+        - in: query
+          description: list user id
+          required: false
+          name: user_ids
+          schema:
+            example: 1,2,3,4
+            type: string
+            maxLength: 32
+            minLength: 6
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+
+        - in: query
+          name: last_time
+          schema:
+            type: number
+          example: 1588761265000
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessListUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /chat/list-user-react/{chat_id}:
+    get:
+      tags:
+        - List User React
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: chat_id
+          schema:
+            $ref: "#/components/schemas/chatID"
+        - in: query
+          description: list user id
+          required: false
+          name: user_ids
+          schema:
+            example: 1,2,3,4
+            type: string
+            maxLength: 32
+            minLength: 6
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+
+        - in: query
+          name: last_time
+          schema:
+            type: number
+          example: 1588761265000
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessListUserReact"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /inner/post/react/{post_id}:
+    post:
+      tags:
+        - Service
+      security:
+        - ServiceHeader: []
+        - ServiceKeyHeader: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: post_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "#/components/schemas/ReactInnerParam"
+        required: true
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /inner/comment/react/{comment_id}:
+    post:
+      tags:
+        - Service
+      security:
+        - ServiceHeader: []
+        - ServiceKeyHeader: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: comment_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "#/components/schemas/ReactInnerParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /inner/story/react/{story_id}:
+    post:
+      tags:
+        - Service
+      security:
+        - ServiceHeader: []
+        - ServiceKeyHeader: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: story_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "#/components/schemas/ReactInnerParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /inner/chat/react/{chat_id}:
+    post:
+      tags:
+        - Service
+      security:
+        - ServiceHeader: []
+        - ServiceKeyHeader: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: chat_id
+          schema:
+            $ref: "#/components/schemas/chatID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "#/components/schemas/ReactInnerParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /inner/post/list-user-react/{post_id}:
+    get:
+      tags:
+        - Service
+      security:
+        - ServiceHeader: []
+        - ServiceKeyHeader: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: post_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+        - in: query
+          name: last_time
+          schema:
+            type: number
+          example: 1588761265000
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessListUserReactInner"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /inner/comment/list-user-react/{comment_id}:
+    get:
+      tags:
+        - Service
+      security:
+        - ServiceHeader: []
+        - ServiceKeyHeader: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: comment_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+        - in: query
+          name: last_time
+          schema:
+            type: number
+          example: 1588761265000
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessListUserReactInner"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /inner/story/list-user-react/{story_id}:
+    get:
+      tags:
+        - Service
+      security:
+        - ServiceHeader: []
+        - ServiceKeyHeader: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: story_id
+          schema:
+            $ref: "#/components/schemas/schemaid"
+        - in: query
+          description: list user id
+          required: false
+          name: user_ids
+          schema:
+            example: 1,2,3,4
+            type: string
+            maxLength: 32
+            minLength: 6
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+
+        - in: query
+          name: last_time
+          schema:
+            type: number
+          example: 1588761265000
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessListUserReactInner"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /inner/chat/list-user-react/{chat_id}:
+    get:
+      tags:
+        - Service
+      security:
+        - ServiceHeader: []
+        - ServiceKeyHeader: []
+      parameters:
+        - in: path
+          description: string
+          required: true
+          name: chat_id
+          schema:
+            $ref: "#/components/schemas/chatID"
+        - in: query
+          description: list user id
+          required: false
+          name: user_ids
+          schema:
+            example: 1,2,3,4
+            type: string
+            maxLength: 32
+            minLength: 6
+        - in: query
+          name: react_type
+          schema:
+            $ref: "#/components/schemas/ReactType"
+
+        - in: query
+          name: last_time
+          schema:
+            type: number
+          example: 1588761265000
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessListUserReactInner"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /inner/chat/get-data:
+    get:
+      tags:
+        - Service
+      security:
+        - ServiceHeader: []
+        - ServiceKeyHeader: []
+      parameters:
+        - in: query
+          description: list id chat
+          required: true
+          name: ids
+          schema:
+            $ref: "#/components/schemas/chatID"
+        - in: query
+          description: user id
+          required: false
+          name: user_id
+          schema:
+            example: 427727535
+            type: string
+            maxLength: 32
+            minLength: 6
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessGetDataChat"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/LimitRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+components:
+  schemas:
+    ReactType:
+      example: 1
+      type: integer
+      description: >
+        react_type:
+          * `0`: unreaction
+          * `1`: like
+          * `2`: love
+          * `3`: haha
+          * `4`: sock
+          * `5`: sad
+          * `6`: angry
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+
+    Relation:
+      example: ""
+      type: string
+      description: >
+        react_type:
+          * `0`: unreaction
+          * `1`: like
+          * `2`: love
+          * `3`: haha
+          * `4`: sock
+          * `5`: sad
+          * `6`: angry
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+
+    DataSource:
+      example: 1
+      type: integer
+      description: >
+        react_type:
+          * `0`: unspecified
+          * `1`: pc_web
+          * `2`: pc_mobile
+          * `3`: ios
+          * `4`: android
+          * `5`: crawl
+          * `6`: backend
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+
+    schemaid:
+      example: hihihi
+      type: string
+      maxLength: 32
+      minLength: 6
+
+    chatID:
+      example: "1607510397781_2"
+      type: string
+      maxLength: 32
+      minLength: 6
+
+    ReactParam:
+      properties:
+        react_type:
+          $ref: "#/components/schemas/ReactType"
+        data_source:
+          $ref: "#/components/schemas/DataSource"
+      required:
+        - react_type
+      type: object
+
+    ReactInnerParam:
+      properties:
+        user_id:
+          example: 1
+          type: integer
+        react_type:
+          $ref: "#/components/schemas/ReactType"
+        data_source:
+          $ref: "#/components/schemas/DataSource"
+      required:
+        - react_type
+      type: object
+
+    UserReactInner:
+      properties:
+        user_id:
+          example: 1
+          type: integer
+        react_type:
+          $ref: "#/components/schemas/ReactType"
+        updated_at:
+          example: 1592811945000
+          type: integer
+      type: object
+
+    UserReact:
+      properties:
+        user:
+          type: object
+          $ref: "#/components/schemas/User"
+        react_type:
+          $ref: "#/components/schemas/ReactType"
+        updated_at:
+          example: 1592811945000
+          type: integer
+        relation:
+          example: "friend"
+          type: string
+          enum:
+            - friend
+      type: object
+
+    ItemCheckIsReact:
+      properties:
+        q9wf466ezm28:
+          properties:
+            react_type:
+              type: string
+              example: 1
+      type: object
+
+    ItemCounter:
+      properties:
+        q9wf466ezm28:
+          properties:
+            react_type:
+              properties:
+                1:
+                  type: integer
+                  example: 10
+                2:
+                  type: integer
+                  example: 10
+                3:
+                  type: integer
+                  example: 10
+                4:
+                  type: integer
+                  example: 10
+                5:
+                  type: integer
+                  example: 10
+                6:
+                  type: integer
+                  example: 10
+                7:
+                  type: integer
+                  example: 10
+            total:
+              type: integer
+              example: 10
+              description: Total React
+          type: object
+
+    ItemChatData:
+      properties:
+        id:
+          type: string
+          example: "1607510397781_2"
+        react_count:
+          properties:
+            react_type_1:
+              type: integer
+              example: 6
+            react_type_2:
+              type: integer
+              example: 8
+            react_type_3:
+              type: integer
+              example: 4
+            react_type_4:
+              type: integer
+              example: 1
+            react_type_5:
+              type: integer
+              example: 9
+            react_type_6:
+              type: integer
+              example: 7
+        react_yourself:
+          type: integer
+          example: 4
+        react_count_total:
+          type: integer
+          example: 35
+          description: Total React
+      type: object
+
+    OK:
+      properties:
+        message:
+          example: Successful!
+          type: string
+        code:
+          format: int64
+          type: integer
+          example: 200
+      type: object
+
+    Paging:
+      properties:
+        next:
+          example: "last_time=1592807715000"
+          type: string
+        prev:
+          example: "last_time=1592811945000"
+          type: string
+      type: object
+
+    User:
+      properties:
+        id:
+          example: 123456
+          type: number
+        display_name:
+          example: hihihi
+          type: string
+        cover:
+          example: hihihi
+          type: string
+        cover_thumb_pattern:
+          example: hihihi
+          type: string
+        avatar:
+          example: hihihi
+          type: string
+        avatar_thumb_pattern:
+          example: hihihi
+          type: string
+        status:
+          type: integer
+          description: >
+            User Status:
+              * `0` InActive
+              * `1` Active
+              * `2` Block
+              * `3` Deleted
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+        status_kyc:
+          example: 1
+          type: integer
+          description: >
+            status_kyc:
+              * `0` N/A
+              * `1` STATUS_PENDING
+              * `2` STATUS_PROCESSING
+              * `3` STATUS_APPROVE
+              * `4` STATUS_REJECT
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+        status_verify:
+          example: 1
+          type: integer
+          enum:
+            - 0
+            - 1
+        username:
+          example: hihihi
+          type: string
+      required:
+        - title
+      type: object
+
+  responses:
+    SuccessListUserReact:
+      description: Successful!
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/OK"
+              - type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/UserReact"
+                    type: array
+                  links:
+                    $ref: "#/components/schemas/Paging"
+                    type: object
+
+    SuccessListUserReactInner:
+      description: Successful!
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/OK"
+              - type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/UserReactInner"
+                    type: array
+                  links:
+                    $ref: "#/components/schemas/Paging"
+                    type: object
+
+    SuccessCountUserReact:
+      description: Successful!
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/OK"
+              - type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ItemCounter"
+
+    SuccessCountUserReactMulti:
+      description: Successful!
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/OK"
+              - type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemCounter"
+                    type: array
+
+    SuccessCheckUserReact:
+      description: Successful!
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/OK"
+              - type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ItemCheckIsReact"
+
+    SuccessCheckUserReactMulti:
+      description: Successful!
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/OK"
+              - type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemCheckIsReact"
+                    type: array
+
+    SuccessGetDataChat:
+      description: Successful!
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/OK"
+              - type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemChatData"
+                    type: array
+
+    Success:
+      description: Successful!
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OK"
+
+    InternalServerError:
+      description: Internal server error :)
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                example: Internal server error :)
+                type: string
+              code:
+                format: int64
+                type: integer
+                example: 500
+            type: object
+
+    LimitRequest:
+      description: Limit request
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                example: Limit request
+                type: string
+              code:
+                format: int64
+                type: integer
+                example: 429
+            type: object
+
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                example: Not Found
+                type: string
+              code:
+                format: int64
+                type: integer
+                example: 404
+            type: object
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                example: Forbidden
+                type: string
+              code:
+                format: int64
+                type: integer
+                example: 403
+            type: object
+
+    UNAUTHORIZED:
+      description: UNAUTHORIZED
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                example: UNAUTHORIZED
+                type: string
+              code:
+                format: int64
+                type: integer
+                example: 401
+            type: object
+
+    BadRequest:
+      description: Invalid status value
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                example: Invalid status value
+                type: string
+              code:
+                format: int64
+                type: integer
+                example: 400
+            type: object
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ServiceHeader:
+      type: apiKey
+      name: x-gapo-role
+      description: Use `service` role to access internal api
+      in: header
+    ServiceKeyHeader:
+      type: apiKey
+      name: x-gapo-api-key
+      description: Use apikey from devops team
+      in: header
