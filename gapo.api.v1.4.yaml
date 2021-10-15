@@ -1,0 +1,3072 @@
+openapi: 3.0.1
+info:
+  title: GAPO API
+  version: 1.0.0
+servers:
+  - url: https://staging-api.gapo.vn/main/v1.4
+  - url: https://api.gapo.vn/main/v1.4
+  - url: http://localhost:8080
+
+paths:
+  /feed:
+    get:
+      deprecated: true
+      description: Use new feed service
+      tags:
+        - feed
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: params
+          schema:
+            type: object
+            properties:
+              from_id:
+                type: string
+            additionalProperties:
+              type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/follow:
+    get:
+      deprecated: true
+      description: Use new feed service
+      tags:
+        - feed
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: params
+          schema:
+            type: object
+            properties:
+              from_id:
+                type: string
+            additionalProperties:
+              type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            followed_tag:
+                              type: string
+                        - $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/video:
+    get:
+      deprecated: true
+      description: Use new feed service
+      tags:
+        - feed
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: params
+          schema:
+            type: object
+            properties:
+              from_id:
+                type: string
+            additionalProperties:
+              type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/hashtag:
+    get:
+      summary: |-
+        Lấy danh sách bài viết của một hashtag
+      tags:
+        - feed
+      parameters:
+        - description: hashtag cần lấy bài viết
+          in: query
+          name: tag
+          required: true
+          schema:
+            type: string
+        - description: loại danh sách bài viết
+          in: query
+          name: type
+          required: false
+          schema:
+            type: string
+            enum: [hot, new]
+        - description: skip items in post id list
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - description: Giới hạn số lượng phần tử trả về
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/user/{id}:
+    get:
+      summary: |-
+        Lấy danh sách bài viết của một người dùng
+      tags:
+        - feed
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: fpp
+          description: Force Pin Post, fpp=1 => get bài PIN ở trang bất kì
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/user-photo/{id}:
+    get:
+      summary: |-
+        Lấy danh sách ảnh của một người dùng
+      tags:
+        - feed
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/group/{id}:
+    get:
+      summary: |-
+        Lấy danh sách bài viết của một nhóm
+      tags:
+        - feed
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/group-files:
+    get:
+      summary: |-
+        Lấy danh sách các tệp của một nhóm
+      tags:
+        - feed
+      parameters:
+        - in: query
+          name: group_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        user_id:
+                          description: ID người post file
+                          type: integer
+                        post_id:
+                          description: ID bài post chứa file
+                          type: string
+                        name:
+                          type: string
+                        file_type:
+                          description: loại file
+                          type: string
+                        file_id:
+                          type: string
+                        src:
+                          type: string
+                        size:
+                          type: integer
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/group-links:
+    get:
+      summary: |-
+        Lấy danh sách links trong một nhóm
+      description: Lấy danh sách links trong một nhóm
+      tags:
+        - feed
+      parameters:
+        - in: query
+          name: group_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        user_id:
+                          description: ID người dùng post links
+                          type: integer
+                        post_id:
+                          description: ID bài post chứa links
+                          type: string
+                        title:
+                          type: string
+                        description:
+                          type: string
+                        src:
+                          type: string
+                        thumb:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                            src:
+                              type: string
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/group-images:
+    get:
+      summary: |-
+        Lấy danh sách ảnh trong một nhóm
+      tags:
+        - feed
+      parameters:
+        - in: query
+          name: group_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: ID ảnh
+                          type: string
+                        user_id:
+                          description: ID người đăng ảnh
+                          type: integer
+                        post_id:
+                          description: ID bài post chứa ảnh
+                          type: string
+                        type:
+                          type: string
+                          enum:
+                            - image
+                        src:
+                          type: string
+                        width:
+                          type: integer
+                        height:
+                          type: integer
+                        thumb_pattern:
+                          type: string
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/group-videos:
+    get:
+      summary: |-
+        Lấy danh sách videos trong một nhóm
+      description: Lấy danh sách videos trong một nhóm
+      tags:
+        - feed
+      parameters:
+        - in: query
+          name: group_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        user_id:
+                          description: ID người đăng video
+                          type: integer
+                        post_id:
+                          description: ID bài post chứa video
+                          type: string
+                        type:
+                          description: loại video
+                          type: string
+                        video_id:
+                          type: string
+                        src:
+                          type: string
+                        duration:
+                          description: độ dài video
+                          type: number
+                        store:
+                          type: string
+                        thumb:
+                          type: object
+                          properties:
+                            src:
+                              type: string
+                            width:
+                              type: number
+                            height:
+                              type: number
+                        available_format:
+                          type: object
+                          properties:
+                            480p:
+                              type: string
+                            720p:
+                              type: string
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/group-post-files:
+    get:
+      summary: |-
+        Lấy danh sách bài post có chứa files
+      tags:
+        - feed
+      parameters:
+        - in: query
+          name: group_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/group/{id}/pin:
+    get:
+      summary: |-
+        Lấy bài post được PIN trong nhóm
+      tags:
+        - feed
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+
+  /feed/page/{id}:
+    get:
+      summary: |-
+        Lấy danh sách bài post trong một page
+      tags:
+        - feed
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /feed/page/{id}/pin:
+    get:
+      summary: Lấy bài PIN trong một page
+      tags:
+        - feed
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: number
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+
+  /feed/list:
+    get:
+      tags:
+        - feed
+      parameters:
+        - in: query
+          name: ids
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+
+  /comment:
+    get:
+      deprecated: true
+      description: Use new comment v2 service
+      tags:
+        - comment
+      parameters:
+        - in: query
+          name: post_id
+          schema:
+            type: string
+        - in: query
+          name: parent_id
+          schema:
+            type: string
+        - in: query
+          name: highlight
+          schema:
+            type: string
+        - in: query
+          name: from_id
+          schema:
+            type: string
+        - in: query
+          name: to_id
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+
+  /pin-comments:
+    post:
+      deprecated: true
+      description: Use new comment v2 service
+      tags:
+        - pin-comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment_id:
+                  type: string
+      responses:
+        200:
+          description: OK!
+
+  /pin-comments/{post_id}:
+    get:
+      deprecated: true
+      description: Use new comment v2 service
+      tags:
+        - pin-comment
+      parameters:
+        - in: path
+          required: true
+          name: post_id
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+    delete:
+      deprecated: true
+      description: Use new comment v2 service
+      tags:
+        - pin-comment
+      parameters:
+        - in: path
+          required: true
+          name: post_id
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+
+  /video/suggest:
+    get:
+      deprecated: true
+      description: Use new feed service
+      tags:
+        - suggest
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: video_id
+          schema:
+            type: string
+        - in: query
+          name: context
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /react/status-post:
+    get:
+      deprecated: true
+      description: Use new react v3 service
+      tags:
+        - react-status
+      parameters:
+        - in: query
+          name: ids
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /react/status-comment:
+    get:
+      deprecated: true
+      description: Use new react v3 service
+      tags:
+        - react-status
+      parameters:
+        - in: query
+          name: ids
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /post/user-like:
+    get:
+      deprecated: true
+      description: Use new react v3 service
+      parameters:
+        - in: query
+          name: post_id
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: string
+        - in: query
+          name: from_id
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "./common.entity.yaml#/components/schemas/UserMeta"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /suggest/kol:
+    get:
+      deprecated: true
+      description: Use new suggest service
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            follow_count:
+                              type: integer
+                        - $ref: "./common.entity.yaml#/components/schemas/UserMeta"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /hobbies/list:
+    get:
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        description:
+                          type: string
+                        icon:
+                          type: string
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /post/view:
+    get:
+      summary: Xem chi tiết một bài đăng
+      tags:
+        - post
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "./common.entity.yaml#/components/schemas/Post"
+        403:
+          description: Post Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  message:
+                    type: string
+                  status:
+                    type: integer
+                  code:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      group:
+                        $ref: "./common.entity.yaml#/components/schemas/GroupMeta"
+        404:
+          description: Post Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  message:
+                    type: string
+                  status:
+                    type: integer
+                  code:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: "./common.entity.yaml#/components/schemas/UserMeta"
+                      page:
+                        $ref: "./common.entity.yaml#/components/schemas/PageMeta"
+                      group:
+                        $ref: "./common.entity.yaml#/components/schemas/GroupMeta"
+
+  /post/create:
+    post:
+      summary: Tạo bài viết
+      tags:
+        - post
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Không bỏ trống trường `content` hoặc `media`
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PostInput"
+        required: true
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  message:
+                    type: string
+                  post_id:
+                    type: string
+                  post:
+                    $ref: "./common.entity.yaml#/components/schemas/Post"
+                  code:
+                    type: integer
+
+  /post/update:
+    post:
+      summary: sửa bài viết
+      tags:
+        - post
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              allOf:
+                - type: object
+                  required: [id]
+                  properties:
+                    id:
+                      type: string
+                - $ref: "#/components/schemas/PostInput"
+      responses:
+        200:
+          description: OK!
+
+  /post/delete:
+    post:
+      summary: |-
+        Xoá bài viết
+      tags:
+        - post
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+      responses:
+        200:
+          description: OK!
+
+  /post/acknowledge/{user_id}:
+    get:
+      description: Lấy danh sách bài viết ghi nhận của một người dùng
+      tags:
+        - post
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: from_id
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "./common.entity.yaml#/components/schemas/Post"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+        403:
+          description: Post Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  message:
+                    type: string
+                  status:
+                    type: integer
+                  code:
+                    type: integer
+
+  /post/add-view:
+    post:
+      tags:
+        - post
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - post_id
+              properties:
+                post_id:
+                  type: string
+      responses:
+        200:
+          description: OK!
+
+  /post/pin/{post_id}:
+    post:
+      tags:
+        - post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notify:
+                  type: boolean
+      responses:
+        200:
+          description: OK!
+
+  /post/unpin/{post_id}:
+    post:
+      tags:
+        - post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+
+  /schedule-posts:
+    get:
+      tags:
+        - schedule-post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: target
+          schema:
+            type: string
+        - in: query
+          name: publish_time
+          description: publish_time = 0 => get draft post / no publish_time => get schedule-post
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            publish_time:
+                              type: number
+                        - $ref: "#/components/schemas/PostInput"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+    post:
+      tags:
+        - schedule-post
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: . `content` or `media` must be required
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    publish_time:
+                      type: number
+                - $ref: "#/components/schemas/PostInput"
+        required: true
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  message:
+                    type: string
+                  post_id:
+                    type: string
+                  post:
+                    $ref: "./common.entity.yaml#/components/schemas/Post"
+                  code:
+                    type: integer
+
+  /schedule-posts/{id}:
+    patch:
+      tags:
+        - schedule-post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      publish_time:
+                        type: number
+                  - $ref: "#/components/schemas/PostInput"
+    delete:
+      tags:
+        - schedule-post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+
+  /schedule-posts/post-now/id:
+    post:
+      responses:
+        200:
+          description: OK!
+
+  /pending-posts/group-count/{group_id}:
+    get:
+      tags:
+        - pending-post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: group_id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: user_id
+          schema:
+            type: number
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: number
+
+  /pending-posts/group/{group_id}:
+    get:
+      tags:
+        - pending-post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: group_id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: ["create_time:desc", "create_time:asc"]
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            publish_time:
+                              type: number
+                        - $ref: "#/components/schemas/PostInput"
+                  links:
+                    type: object
+                    properties:
+                      next:
+                        type: string
+
+  /pending-posts/accept/{post_id}:
+    post:
+      tags:
+        - pending-post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /pending-posts/decline/{post_id}:
+    post:
+      tags:
+        - pending-post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /comment/create:
+    post:
+      deprecated: true
+      description: Use new comment v2 service
+      tags:
+        - comment
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: . `content` or `media` must be required
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/CommentCreateInput"
+      responses:
+        200:
+          description: OK!
+
+  /comment/update:
+    post:
+      deprecated: true
+      description: Use new comment v2 service
+      tags:
+        - comment
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/CommentUpdateInput"
+      responses:
+        200:
+          description: OK!
+
+  /comment/delete:
+    post:
+      deprecated: true
+      description: Use new comment v2 service
+      tags:
+        - comment
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+      responses:
+        200:
+          description: OK!
+
+  /comment/block:
+    post:
+      deprecated: true
+      description: Use new comment v2 service
+      tags:
+        - comment
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [post_id]
+              properties:
+                user_id:
+                  type: integer
+                page_id:
+                  type: integer
+                post_id:
+                  type: string
+      responses:
+        200:
+          description: OK!
+
+  /comment/un-block:
+    post:
+      deprecated: true
+      description: Use new comment v2 service
+      tags:
+        - comment
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [post_id]
+              properties:
+                user_id:
+                  type: integer
+                page_id:
+                  type: integer
+                post_id:
+                  type: string
+      responses:
+        200:
+          description: OK!
+
+  /search/post:
+    post:
+      deprecated: true
+      description: Use new search service
+      tags:
+        - search
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                page:
+                  type: integer
+      responses:
+        200:
+          description: OK!
+
+  /app-version:
+    get:
+      tags:
+        - update
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: os
+          schema:
+            type: string
+            enum:
+              - ios
+              - android
+        - in: query
+          name: version
+          schema:
+            type: string
+        - in: query
+          name: device_model
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+
+  /post-stats/group/{group_id}:
+    get:
+      parameters:
+        - in: path
+          name: group_id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+
+  /react-comment-v2/react/{comment_id}:
+    post:
+      deprecated: true
+      description: Use new react v3 service
+      tags:
+        - comment-v2
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          required: true
+          name: comment_id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                react_type:
+                  type: integer
+                data_source:
+                  type: integer
+        required: true
+      responses:
+        200:
+          description: OK!
+
+  /react-comment-v2/list-user-react/{comment_id}:
+    get:
+      deprecated: true
+      description: Use new react v3 service
+      tags:
+        - comment-v2
+      parameters:
+        - in: path
+          required: true
+          name: comment_id
+          schema:
+            type: string
+        - in: query
+          name: react_type
+          schema:
+            type: integer
+        - in: query
+          name: last_time
+          schema:
+            type: number
+      responses:
+        200:
+          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/SuccessListUserReact"
+        "400":
+          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/BadRequest"
+        "401":
+          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/UNAUTHORIZED"
+        "403":
+          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/NotFound"
+        "429":
+          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/LimitRequest"
+        "500":
+          $ref: "./gapo.reaction.v3.0.yaml#/components/responses/InternalServerError"
+
+  /posts/polls:
+    post:
+      description: Create poll vote post
+      tags:
+        - post
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PollPostInput"
+        required: true
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  message:
+                    type: string
+                  post_id:
+                    type: string
+                  post:
+                    $ref: "./common.entity.yaml#/components/schemas/Post"
+                  code:
+                    type: integer
+
+  /posts/{post_id}:
+    patch:
+      description: Update poll post
+      tags:
+        - post
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          required: true
+          name: post_id
+          schema:
+            type: string
+      requestBody:
+        description: Update poll post
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePollPostInput"
+        required: true
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    default: Success
+                  message:
+                    type: string
+                  post_id:
+                    type: string
+                  code:
+                    type: integer
+        400:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+              examples:
+                NotFoundVote: # Example 1
+                  value:
+                    code: 601
+                    message: Không tìm thấy lựa chọn, vui lòng thử lại!
+                PollExpired:
+                  value:
+                    code: 613
+                    message: Cuộc thăm dò ý kiến đã kết thúc
+
+  /posts/{post_id}/votes:
+    post:
+      description: Create vote
+      tags:
+        - post
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          required: true
+          name: post_id
+          schema:
+            type: string
+      requestBody:
+        description: Create vote
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVotePostInput"
+        required: true
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    default: Success
+                  message:
+                    type: string
+                  post_id:
+                    type: string
+                  code:
+                    type: integer
+        400:
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+              examples:
+                PollExpired:
+                  value:
+                    code: 613
+                    message: Cuộc thăm dò ý kiến đã kết thúc
+
+  /posts/{post_id}/votes/{vote_id}:
+    patch:
+      description: Update vote
+      tags:
+        - post
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          required: true
+          name: post_id
+          schema:
+            type: string
+        - in: path
+          required: true
+          name: vote_id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateVotePostInput"
+        required: true
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    default: Success
+                  post_id:
+                    type: string
+                  code:
+                    type: integer
+        400:
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+              examples:
+                NotFoundVote: # Example 1
+                  value:
+                    code: 601
+                    message: Không tìm thấy lựa chọn, vui lòng thử lại!
+                PollExpired:
+                  value:
+                    code: 613
+                    message: Cuộc thăm dò ý kiến đã kết thúc
+    delete:
+      description: Delete vote
+      tags:
+        - post
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          required: true
+          name: post_id
+          schema:
+            type: string
+        - in: path
+          required: true
+          name: vote_id
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    default: Success
+                  post_id:
+                    type: string
+                  code:
+                    type: integer
+        400:
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+              examples:
+                NotFoundVote: # Example 1
+                  value:
+                    code: 601
+                    message: Không tìm thấy lựa chọn, vui lòng thử lại!
+                PollExpired:
+                  value:
+                    code: 613
+                    message: Cuộc thăm dò ý kiến đã kết thúc
+
+  /posts/{post_id}/votes/{vote_id}/choose:
+    post:
+      description: Choose a vote
+      tags:
+        - post
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          required: true
+          name: post_id
+          schema:
+            type: string
+        - in: path
+          required: true
+          name: vote_id
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    default: Success
+                  post_id:
+                    type: string
+                  code:
+                    type: integer
+        400:
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+              examples:
+                NotFoundVote: # Example 1
+                  value:
+                    code: 601
+                    message: Không tìm thấy lựa chọn, vui lòng thử lại!
+                PollExpired:
+                  value:
+                    code: 613
+                    message: Cuộc thăm dò ý kiến đã kết thúc
+    delete:
+      description: Unhoose a vote
+      tags:
+        - post
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          required: true
+          name: post_id
+          schema:
+            type: string
+        - in: path
+          required: true
+          name: vote_id
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    default: Success
+                  post_id:
+                    type: string
+                  code:
+                    type: integer
+        400:
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+              examples:
+                NotFoundVote: # Example 1
+                  value:
+                    code: 601
+                    message: Không tìm thấy lựa chọn, vui lòng thử lại!
+                PollExpired:
+                  value:
+                    code: 613
+                    message: Cuộc thăm dò ý kiến đã kết thúc
+
+  /posts/<post_id>/votes/<vote_id>/users:
+    get:
+      description: Get users vote
+      tags:
+        - post
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          required: true
+          name: post_id
+          schema:
+            type: string
+        - in: path
+          required: true
+          name: vote_id
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UserVote"
+                  links:
+                    type: object
+                    properties:
+                      prev:
+                        type: string
+                      next:
+                        type: string
+
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id bài viết
+        title:
+          type: string
+          description: tiêu đề bài viết
+        content:
+          type: string
+          description: nội dung bài viết
+        mediaData:
+          $ref: "#/components/schemas/PostMedia"
+        target:
+          description: >
+            Đích bài viết:
+              * `user:user_id` Đăng bài vào timeline của người dùng
+              * `page:page_id` Đăng bài vào timeline của page
+              * `group:group_id` Đăng bài vào nhóm
+          type: string
+        data_source:
+          $ref: "./common.entity.yaml#/components/schemas/DataSource"
+        privacy:
+          $ref: "#/components/schemas/PostPrivacy"
+        pin_comments:
+          type: array
+          description: Bình luận được pin lên đầu
+          items:
+            $ref: "./common.entity.yaml#/components/schemas/Comment"
+        comments:
+          type: array
+          description: Danh sách bình luận của bài viết
+          items:
+            $ref: "./common.entity.yaml#/components/schemas/Comment"
+        mention:
+          type: array
+          description: Danh sách người dùng được nhắc đến trong bài viết
+          items:
+            $ref: "./common.entity.yaml#/components/schemas/Mention"
+        user_tags:
+          type: array
+          description: Danh sách người dùng được tag trong bài viết
+          items:
+            $ref: "./common.entity.yaml#/components/schemas/UserTags"
+        create_time:
+          type: integer
+        update_time:
+          type: integer
+        post_type:
+          description: Loại bài viết
+          $ref: "#/components/schemas/PostType"
+        react_status:
+          type: integer
+          enum: [0, 1]
+        react_count:
+          type: object
+          properties:
+            react_type_1:
+              type: integer
+            react_type_2:
+              type: integer
+            react_type_3:
+              type: integer
+            react_type_4:
+              type: integer
+            react_type_5:
+              type: integer
+            react_type_6:
+              type: integer
+        page:
+          $ref: "#/components/schemas/PageMeta"
+        user:
+          $ref: "#/components/schemas/UserMeta"
+        group:
+          $ref: "#/components/schemas/GroupMeta"
+        background:
+          $ref: "#/components/schemas/Background"
+        gif:
+          $ref: "#/components/schemas/Gif"
+        question:
+          description: Trả lời câu hỏi người dùng
+          type: object
+          properties:
+            id:
+              type: integer
+            ask_user_id:
+              type: integer
+            answer_user_id:
+              type: integer
+            content:
+              type: string
+            anonymous:
+              type: boolean
+        ask_me:
+          description: Gửi câu hỏi cho người dùng
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [ask_me]
+            user_gender:
+              $ref: "#/components/schemas/UserGender"
+        preview_link:
+          description: Xem trước nội dung một đường dẫn
+          items:
+            $ref: "#/components/schemas/Link"
+        user_tag:
+          description: Danh sách người dùng được tag trong bài viết
+          type: array
+          items:
+            $ref: "#/components/schemas/UserTags"
+        content_rtf:
+          type: integer
+        counts:
+          description: Bộ đếm
+          type: object
+          properties:
+            comment_count:
+              description: lượt bình luận
+              type: integer
+            view_count:
+              description: lượt xem
+              type: integer
+            share_count:
+              description: lượt chia sẻ
+              type: integer
+        acknowledged:
+          description: Ghi nhận người dùng
+          type: object
+          properties:
+            user_id:
+              description: Người ghi nhận
+              type: integer
+            target_id:
+              description: Người được ghi nhận
+              type: integer
+            workspace_id:
+              description: ID của tổ chức
+              type: integer
+            create_time:
+              type: integer
+            update_time:
+              type: integer
+            badge:
+              description: Huy hiệu
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                src:
+                  type: string
+                icon:
+                  type: string
+            background:
+              $ref: "#/components/schemas/Background"
+            target_user:
+              $ref: "#/components/schemas/UserMeta"
+        poll_vote:
+          description: Cuộc bình chọn
+          type: object
+          properties:
+            id:
+              type: string
+            title:
+              type: string
+            allow_add_choice:
+              type: boolean
+            allow_multiple_choice:
+              type: boolean
+            user_id:
+              type: string
+            type:
+              type: string
+            end_at:
+              type: integer
+            votes:
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  id:
+                    type: string
+                  user_id:
+                    type: string
+                  last_user_update:
+                    type: integer
+                  count:
+                    type: integer
+                  user_votes:
+                    type: array
+                    items:
+                      type: string
+            myself_votes:
+              type: array
+              items:
+                type: string
+            user_votes:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  display_name:
+                    type: string
+                  avatar:
+                    type: string
+                  avatar_thumb_pattern:
+                    type: string
+
+    PostStatus:
+      type: integer
+      description: >
+        Data Source:
+          * const STATUS_PENDING
+          * const STATUS_ACTIVE
+          * const STATUS_PROCESSING
+          * const STATUS_DELETED
+          * const STATUS_DISCARD
+      enum: [0, 1, 2, 3, 4]
+    DataSource:
+      type: integer
+      description: >
+        Data Source:
+          * `0`: unspecified
+          * `1`: pc_web
+          * `2`: pc_mobile
+          * `3`: ios
+          * `4`: android
+          * `5`: crawl
+          * `6`: cms
+          * `7`: service
+      enum: [0, 1, 2, 3, 4, 5, 6, 7]
+    PostPrivacy:
+      type: integer
+      description: >
+        PostPrivacy:
+          * `1`: public
+          * `2`: friend
+          * `3`: private
+          * `4`: group
+          * `5`: work
+      enum: [1, 2, 3, 4, 5]
+    PostMedia:
+      type: array
+      description: >
+        Array of post media:
+          * `photo`
+          * `video`
+          * `link`
+          * `livestream`
+          * `background`
+          * `gif`
+          * `file`
+      items:
+        anyOf:
+          - $ref: "#/components/schemas/Image"
+          - $ref: "#/components/schemas/Video"
+          # - $ref: "#/components/schemas/Link"
+          - $ref: "#/components/schemas/LiveStreamPublic"
+          - $ref: "#/components/schemas/Background"
+          - $ref: "#/components/schemas/Gif"
+          - $ref: "#/components/schemas/Game"
+          - $ref: "#/components/schemas/File"
+    PostType:
+      type: integer
+      enum: [1, 2, 3, 4, 5, 6, 7, 9, 13, 14, 15, 16, 17, 18]
+      description: >
+        PostType:
+          * `1`: status
+          * `2`: photo
+          * `3`: video
+          * `4`: album
+          * `5`: link
+          * `7`: share
+          * `9`: livestream
+          * `10`: livestream_private
+          * `11`: avatar
+          * `12`: cover
+          * `13`: background
+          * `14`: gif
+          * `15`: answer
+          * `16`: ask_me
+          * `17`: game
+          * `18`: file
+          * `19`: acknowledgement
+          * `20`: poll vote
+    File:
+      type: object
+      required:
+        - type
+        - src
+        - file_type
+        - file_id
+      properties:
+        type:
+          type: string
+          enum:
+            - file
+        src:
+          type: string
+        file_id:
+          type: string
+        file_type:
+          type: string
+        name:
+          type: string
+        size:
+          type: integer
+    Image:
+      type: object
+      required:
+        - type
+        - src
+        - width
+        - height
+      properties:
+        type:
+          type: string
+          enum:
+            - image
+        src:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+      example:
+        type: image
+        width: 124
+        height: 124
+        src: https://image-1.gapo.vn/images/default-user-avatar-2.png
+    Background:
+      type: object
+      required:
+        - type
+        - src
+        - width
+        - height
+      properties:
+        type:
+          type: string
+          enum:
+            - background
+        src:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        id:
+          type: integer
+          description: This field is required in case create acknowledgement post
+      example:
+        type: background
+        src: https://image-1.gapo.vn/images/default-user-avatar-2.png
+        width: 124
+        height: 124
+    Gif:
+      type: object
+      required:
+        - type
+        - src
+        - width
+        - height
+      properties:
+        type:
+          type: string
+          enum:
+            - gif
+        src:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+      example:
+        type: gif
+        src: https://media2.giphy.com/media/j0XqrKuXvQgw035LFB/giphy.gif?cid=ecf05e47a4d6be0ef51392f7da72350264671f2623b095a7&rid=giphy.gif
+        width: 480
+        height: 480
+    Video:
+      type: object
+      required:
+        - type
+        - video_id
+      properties:
+        type:
+          type: string
+          enum:
+            - video
+        video_id:
+          type: string
+    Link:
+      type: object
+      required:
+        - type
+        - src
+        - thumb
+      properties:
+        type:
+          type: string
+          enum:
+            - link
+        src:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        thumb:
+          $ref: "#/components/schemas/Image"
+    LiveStream:
+      type: object
+      required:
+        - type
+        - stream_id
+        - status
+        - thumb
+      properties:
+        type:
+          type: string
+          enum: [livestream]
+        stream_id:
+          type: string
+        status:
+          type: integer
+          enum: [0, 1, 2, 3, 4]
+          description: >
+            * 0: N/a
+            * 1: Streaming
+            * 2: Finish
+            * 3: Error
+            * 4: Disconnect
+        thumb:
+          $ref: "#/components/schemas/Image"
+    Game:
+      type: object
+      required:
+        - id
+        - status
+        - start_time
+        - ammount
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: integer
+          enum: [0, 1, 2, 3, 4]
+        ammount:
+          type: number
+        start_time:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    LiveStreamPrivate:
+      allOf:
+        - $ref: "#/components/schemas/LiveStream"
+        - type: object
+          required:
+            - password_required
+          properties:
+            password_required:
+              type: integer
+              enum: [1]
+    LiveStreamPublic:
+      allOf:
+        - $ref: "#/components/schemas/LiveStream"
+        - type: object
+          required:
+            - stream_video
+          properties:
+            stream_video:
+              type: object
+              required: [src]
+              properties:
+                src:
+                  type: string
+    News:
+      type: object
+      required:
+        - user_id
+        - news_id
+        - title
+        - description
+        - thumb
+      properties:
+        type:
+          type: string
+          enum:
+            - news
+        user_id:
+          type: integer
+        news_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        thumb:
+          $ref: "#/components/schemas/Image"
+    Mention:
+      type: object
+      required:
+        - offset
+        - length
+        - mention_id
+      properties:
+        offset:
+          type: integer
+        length:
+          type: integer
+        mention_ID:
+          type: string
+    UserTags:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+    UserStatus:
+      type: integer
+      description: >
+        * 0: STATUS_INACTIVE
+        * 1: STATUS_ACTIVE
+        * 2: STATUS_BLOCK
+        * 3: STATUS_DELETED
+      enum: [0, 1, 2, 3]
+    UserStatusVerify:
+      type: integer
+      description: >
+        * 0: STATUS_INACTIVE
+        * 1: STATUS_ACTIVE
+      enum: [0, 1]
+    UserStatusKYC:
+      type: integer
+      description: >
+        * 0: STATUS_NONE
+        * 1: STATUS_PENDING
+        * 2: STATUS_PROCESSING
+        * 3: STATUS_APPROVE
+        * 4: STATUS_REJECT
+      enum: [0, 1, 2, 3]
+    Sticker:
+      type: object
+      required:
+        - type
+        - sticker_id
+      properties:
+        type:
+          type: string
+          enum:
+            - sticker
+        sticker_id:
+          type: integer
+        src:
+          type: string
+    Donate:
+      type: object
+      required:
+        - type
+        - amount
+      properties:
+        amount:
+          type: string
+          format: int64
+    UserMeta:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        display_name:
+          type: string
+        avatar:
+          type: string
+        avatar_thumb_pattern:
+          type: string
+        status_verify:
+          type: integer
+          enum: [0, 1]
+        status_kyc:
+          type: integer
+          enum: [0, 1]
+        is_follow:
+          type: integer
+          enum: [0, 1]
+    User:
+      allOf:
+        - $ref: "#/components/schemas/UserMeta"
+        - type: object
+          properties:
+            gender:
+              $ref: "#/components/schemas/UserGender"
+            birthday:
+              type: string
+            user_info:
+              type: object
+    UserGender:
+      type: integer
+      description: >
+        User Gender:
+          * `0` N/A
+          * `1` Male
+          * `2` Female
+          * `3` LGBT
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+    Page:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        alias:
+          type: string
+        description:
+          type: string
+        avatar:
+          type: string
+        cover:
+          type: string
+        avatar_thumb_pattern:
+          type: string
+        cover_thumb_pattern:
+          type: string
+        info:
+          type: object
+        count:
+          type: object
+          properties:
+            post_count:
+              type: integer
+              deprecated: true
+            user_count:
+              type: integer
+        create_time:
+          type: integer
+        update_time:
+          type: integer
+        is_like:
+          type: integer
+          enum:
+            - 0
+            - 1
+          description: Current user liked or not `0` = yes; `1` = no
+        admin:
+          type: array
+          description: admins of page | array of `User` object
+          items:
+            $ref: "#/components/schemas/UserMeta"
+        status:
+          $ref: "./common.entity.yaml#/components/schemas/PageStatus"
+        status_verify:
+          type: integer
+          enum:
+            - 0
+            - 1
+        page_type:
+          $ref: "./common.entity.yaml#/components/schemas/PageType"
+    PageMeta:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        alias:
+          type: string
+        avatar:
+          type: string
+        avatar_thumb_pattern:
+          type: string
+        status_verify:
+          type: integer
+        is_follow:
+          type: integer
+          enum: [0, 1]
+    PageType:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+    PageStatus:
+      type: integer
+      enum: [0, 1, 2, 3, 4]
+      description: >
+        Page Status:
+          * `0` inactive
+          * `1` active
+          * `2` ban
+          * `3` delete
+          * `4` reject
+    TrendingTag:
+      type: object
+      properties:
+        id:
+          type: integer
+        priority:
+          type: integer
+        tag:
+          type: string
+        type:
+          type: integer
+    HashTagInfo:
+      type: object
+      properties:
+        tag:
+          type: string
+        avatar:
+          type: string
+        user_count:
+          type: integer
+        post_count:
+          type: integer
+        is_following:
+          type: boolean
+    GroupMeta:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        profile_picture:
+          type: string
+        cover:
+          type: string
+        member_count:
+          type: integer
+        role:
+          type: string
+          enum: ["OWNER", "ADMINISTRATOR", "MEMBER"]
+    Comment:
+      type: object
+      properties:
+        content:
+          type: string
+        comment_as:
+          type: string
+        mention:
+          type: array
+          description: Array of `Mention` Schema
+          items:
+            oneOf:
+              - $ref: "./common.entity.yaml#/components/schemas/Mention"
+        user:
+          type: object
+        page:
+          type: object
+    PostInput:
+      type: object
+      properties:
+        content:
+          type: string
+        media:
+          $ref: "./common.entity.yaml#/components/schemas/PostMedia"
+        target:
+          description: >
+            Post Target:
+              * `user:user_id` post to user timeline
+              * `page:page_id` post to page timeline
+              * `group:group_id` post to page group
+          type: string
+        question:
+          type: object
+          properties:
+            id:
+              type: integer
+              required: true
+            ask_user_id:
+              type: integer
+            answer_user_id:
+              type: integer
+            content:
+              type: string
+            anonymous:
+              type: boolean
+        data_source:
+          $ref: "#/components/schemas/DataSource"
+        privacy:
+          $ref: "#/components/schemas/PostPrivacy"
+        mention:
+          type: array
+          description: Array of `Mention` Schema
+          items:
+            $ref: "#/components/schemas/Mention"
+        post_type:
+          description: Value == 16 in case `ask_me` post
+          type: integer
+        user_tags:
+          type: array
+          items:
+            type: int
+        badge_id:
+          type: int
+          description: badge id
+    CommentInput:
+      type: object
+      properties:
+        content:
+          type: string
+        mention:
+          type: array
+          description: Array of `Mention` Schema
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/Mention"
+        media:
+          type: array
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/Image"
+              - $ref: "#/components/schemas/Sticker"
+              - $ref: "#/components/schemas/Donate"
+        data_source:
+          $ref: "./common.entity.yaml#/components/schemas/DataSource"
+    CommentCreateInput:
+      allOf:
+        - type: object
+          required:
+            - post_id
+          properties:
+            post_id:
+              type: string
+            parent_id:
+              type: string
+        - $ref: "#/components/schemas/CommentInput"
+    CommentUpdateInput:
+      allOf:
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+        - $ref: "#/components/schemas/CommentInput"
+    UserInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        display_name:
+          type: string
+        gender:
+          $ref: "./common.entity.yaml#/components/schemas/UserGender"
+        avatar:
+          type: string
+        cover:
+          type: string
+        birthday:
+          type: string
+    PageInput:
+      type: object
+      properties:
+        title:
+          type: string
+        alias:
+          type: string
+        description:
+          type: string
+        type:
+          type: integer
+        avatar:
+          type: string
+        cover:
+          type: string
+        info:
+          type: string
+          description: json encoded string of info object
+    Badge:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        src:
+          type: string
+        icon:
+          type: string
+        src_thumb_pattern:
+          type: string
+        icon_thumb_pattern:
+          type: string
+        status:
+          type: integer
+        create_time:
+          type: integer
+        update_time:
+          type: integer
+
+    UserUpdateAvatar:
+      type: object
+      properties:
+        avatar:
+          type: string
+    UserUpdateCover:
+      type: object
+      properties:
+        cover:
+          type: string
+    AcknowledgeCountResponse:
+      type: object
+    PollPostInput:
+      type: object
+      required:
+        - post_type
+        - target
+      properties:
+        content:
+          type: string
+        media:
+          type: array
+          description: >
+            Array of post media:
+              * `photo`
+              * `video`
+              * `link`
+              * `gif`
+              * `file`
+          items:
+            anyOf:
+              - $ref: "./common.entity.yaml#/components/schemas/Image"
+              - $ref: "./common.entity.yaml#/components/schemas/Video"
+              # - $ref: "./common.entity.yaml#/components/schemas/Link"
+              - $ref: "./common.entity.yaml#/components/schemas/Gif"
+              - $ref: "./common.entity.yaml#/components/schemas/File"
+        target:
+          description: >
+            Post Target:
+              * `user:user_id` post to user timeline
+              * `page:page_id` post to page timeline
+              * `group:group_id` post to page group
+          type: string
+        data_source:
+          $ref: "./common.entity.yaml#/components/schemas/DataSource"
+        privacy:
+          $ref: "./common.entity.yaml#/components/schemas/PostPrivacy"
+        mention:
+          type: array
+          description: Array of `Mention` Schema
+          items:
+            $ref: "./common.entity.yaml#/components/schemas/Mention"
+        post_type:
+          description: Value == 20 in case `poll vote` post
+          type: integer
+        user_tags:
+          type: array
+          items:
+            type: integer
+        poll_vote:
+          type: object
+          required:
+            - title
+            - votes
+          properties:
+            title:
+              type: string
+            allow_add_choice:
+              type: boolean
+            allow_multiple_choice:
+              type: boolean
+            end_at:
+              type: integer
+              description: timestamp in milliseconds
+            votes:
+              type: array
+              maxItems: 10
+              minItems: 2
+              items:
+                type: object
+                required:
+                  - title
+                properties:
+                  title:
+                    type: string
+
+    CreateVotePostInput:
+      type: object
+      properties:
+        title:
+          type: string
+    UpdateVotePostInput:
+      type: object
+      properties:
+        title:
+          type: string
+    UserVote:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        avatar:
+          type: string
+        avatar_thumb_pattern:
+          type: string
+    UpdatePollPostInput:
+      type: object
+      properties:
+        content:
+          type: string
+        media:
+          type: array
+          description: >
+            Array of post media:
+              * `photo`
+              * `video`
+              * `link`
+              * `gif`
+              * `file`
+          items:
+            anyOf:
+              - $ref: "./common.entity.yaml#/components/schemas/Image"
+              - $ref: "./common.entity.yaml#/components/schemas/Video"
+              - $ref: "./common.entity.yaml#/components/schemas/Gif"
+              - $ref: "./common.entity.yaml#/components/schemas/File"
+        target:
+          description: >
+            Post Target:
+              * `user:user_id` post to user timeline
+              * `page:page_id` post to page timeline
+              * `group:group_id` post to page group
+          type: string
+        data_source:
+          $ref: "./common.entity.yaml#/components/schemas/DataSource"
+        privacy:
+          $ref: "./common.entity.yaml#/components/schemas/PostPrivacy"
+        mention:
+          type: array
+          description: Array of `Mention` Schema
+          items:
+            $ref: "./common.entity.yaml#/components/schemas/Mention"
+        user_tags:
+          type: array
+          items:
+            type: integer
+        poll_vote:
+          type: object
+          properties:
+            id:
+              type: string
+            votes:
+              type: array
+              description: List of retained votes
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
